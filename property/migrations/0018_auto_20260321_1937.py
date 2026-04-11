@@ -9,7 +9,12 @@ def apartment_owners(apps, schema_editor):
 
     owner_objects = Owner.objects.all()
     for owner_object in owner_objects:
-        owner_object.apartaments.set(Flat.objects.filter(owner=owner_object.owner))
+        owner_object.apartments.set(Flat.objects.filter(owner=owner_object.owner_name))
+
+
+def move_backwork(apps, schema_editor):
+    Owner = apps.get_model('property', 'Owner')
+    Owner.objects.all().update(flats=[])
 
 
 class Migration(migrations.Migration):
@@ -19,5 +24,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(apartment_owners),
+        migrations.RunPython(apartment_owners, move_backwork),
     ]
