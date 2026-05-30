@@ -8,8 +8,8 @@ def apartment_owners(apps, schema_editor):
     Owner = apps.get_model('property', 'Owner')
 
     owner_objects = Owner.objects.all()
-    for owner_object in owner_objects:
-        owner_object.apartments.set(Flat.objects.filter(owner=owner_object.owner_name))
+    for owner_object in owner_objects.iterator():
+        owner_object.apartments.set(Flat.objects.filter(phonenumber=owner_object.owners_phonenumber))
 
 
 def move_backwork(apps, schema_editor):
